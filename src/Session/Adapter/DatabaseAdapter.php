@@ -81,7 +81,7 @@ class DatabaseAdapter implements AdapterInterface, SessionHandlerInterface {
 	public function gc(int $max_lifetime): int|false {
 		$limit = time() - intval($max_lifetime);
 		$res = $this->database->query("DELETE FROM {$this->table} WHERE timestamp < ?", [$limit]);
-		return $res === true ?: false;
+		return $res === true ? 1 : false;
 	}
 
 	/**
@@ -103,13 +103,13 @@ class DatabaseAdapter implements AdapterInterface, SessionHandlerInterface {
 	 * @return string|false
 	 */
 	public function read(string $id): string|false {
+		$ret = false;
 		$res = $this->database->select("SELECT data FROM {$this->table} WHERE id = ?", [$id]);
 		if ($res !== false) {
 			$row = $res[0] ?? null;
-			return $row->data ?? '';
-		} else {
-			return false;
+			$ret = $row->data ?? '';
 		}
+		return $ret;
 	}
 
 	/**
@@ -141,7 +141,6 @@ class DatabaseAdapter implements AdapterInterface, SessionHandlerInterface {
 				break;
 				default:
 					throw new RuntimeException(sprintf("Unsupported database adapter '%s'", get_class($adapter)));
-				break;
 			}
 			$this->is_setup = true;
 		}
