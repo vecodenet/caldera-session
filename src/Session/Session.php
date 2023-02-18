@@ -31,10 +31,14 @@ class Session {
 
 	/**
 	 * Start session
-	 * @return $this
+	 * @param  string $id Session ID
+	 * @return @return $this
 	 */
-	public function start() {
-		if (! session_id() ) {
+	public function start(string $id = '') {
+		if ( $id || !session_id() ) {
+			if ($id) {
+				session_id($id);
+			}
 			session_set_save_handler($this->adapter->getHandler(), false);
 			session_start();
 			# Get flashed and to-be-deleted items
