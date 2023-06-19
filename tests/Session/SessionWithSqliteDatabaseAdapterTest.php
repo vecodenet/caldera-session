@@ -52,6 +52,10 @@ class SessionWithSqliteDatabaseAdapterTest extends TestCase {
 		$session->set('foo', '098f6bcd4621d373cade4e832627b4f6');
 		$foo = $session->get('foo');
 		$this->assertEquals('098f6bcd4621d373cade4e832627b4f6', $foo);
+		#
+		$session->set('bar', ['207c91804d4cbf698be032d2dd7ff735', 'a63743936f0a537ce6a333be23151fc85']);
+		$bar = $session->get('bar');
+		$this->assertIsArray($bar);
 		# Cleanup for other adapters
 		$session->regenerate();
 		$session->destroy();

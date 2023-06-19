@@ -30,10 +30,14 @@ class SessionWithNativeAdapterTest extends TestCase {
 		$session = new Session($adapter);
 		$session->start();
 		$session->set('foo', '37b51d194a7513e45b56f6524f2d51f2');
-		$session->set('bar', ['207c91804d4cbf698be032d2dd7ff735', 'a63743936f0a537ce6a333be23151fc85']);
 		$this->assertTrue( $session->has('foo') );
 		$foo = $session->get('foo');
 		$this->assertEquals('37b51d194a7513e45b56f6524f2d51f2', $foo);
+		#
+		$session->set('bar', ['207c91804d4cbf698be032d2dd7ff735', 'a63743936f0a537ce6a333be23151fc85']);
+		$bar = $session->get('bar');
+		$this->assertIsArray($bar);
+		#
 		$session->delete('foo');
 		$this->assertFalse( $session->has('foo') );
 		$session->clear();
